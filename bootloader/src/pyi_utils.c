@@ -302,6 +302,7 @@ pyi_get_temp_path(char *buffer, char *runtime_tmpdir)
     wchar_t *wchar_ret;
     wchar_t prefix[16];
     wchar_t wchar_buffer[PATH_MAX];
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"  // disable maybe warnings
     char *original_tmpdir;
     wchar_t *wruntime_tmpdir_abspath;
     DWORD rc;
