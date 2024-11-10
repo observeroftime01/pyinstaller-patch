@@ -1,1 +1,0 @@
-Prevent :mod:`tkinter` from being collected if it is unusable.

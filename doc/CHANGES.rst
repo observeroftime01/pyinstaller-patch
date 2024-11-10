@@ -15,6 +15,43 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.11.1 (2024-11-10)
+-------------------
+
+Bugfix
+~~~~~~
+
+* (GNU/Linux) Fix resolving binary dependencies linked using ``$ORIGIN``.
+  (:issue:`8868`)
+* (Linux) Fix discovery and collection of Python shared library when using
+  ``uv``-installed or ``rye``-installed Python that happens to be of same
+  version as the system-installed Python. (:issue:`8850`)
+* (Linux/musl) Prevent ``ld-musl-x86_64.so.1`` from being collected.
+  (:issue:`8868`)
+* (Windows) Add a retry loop to ``onefile`` temporary directory cleanup
+  as an attempt to mitigate situations when bundled DLLs and python
+  extension modules remain locked by the OS and/or anti-virus program
+  for a short while after the application process exits. (:issue:`8870`)
+* (Windows) Fix Qt run-time hooks failing to add the top-level application
+  directory to ``PATH`` when the latter already contains a sub-directory
+  of the top-level application directory (for example, ``pywin32_system32``
+  sub-directory added to ``PATH`` by ``pywin32`` run-time hook). This
+  failure prevented QtNetwork from discovering bundled OpenSSL DLLs, and
+  caused it to (attempt to) load them from other locations that happened
+  to be in ``PATH``. (:issue:`8857`)
+* Fix macOS's default icons being missing from wheels (regression introduced in
+  v6.11.0) (:issue:`8855`)
+* Prevent :mod:`tkinter` from being collected if it is unusable.
+  (:issue:`8868`)
+
+
+Hooks
+~~~~~
+
+* Prevent ``IPython`` from being packaged redundantly if ``matplotlib`` is
+  imported. (:issue:`8868`)
+
+
 6.11.0 (2024-10-15)
 -------------------
 
@@ -768,7 +805,7 @@ Bugfix
   to write the .spec file and building it. This prevents us from overwriting
   an existing (and customized) .spec file if user makes a typo in the .spec
   file's suffix when trying to build it, for example, ``pyinstaller
-  program.cpes``. (:issue:`8279`)
+  program.spec``. (:issue:`8279`)
 
 
 Hooks

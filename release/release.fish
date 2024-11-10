@@ -38,7 +38,7 @@ printf '%s\n' $footer >> doc/CREDITS.rst
 
 # Update docs versions in the README.
 perl -pe 's&https?://pyinstaller.readthedocs.io&https://pyinstaller.org&g' -i README.rst
-perl -pe 's&(https://pyinstaller.org/en/)[^/]+/&$1'$new_version'/&g' -i README.rst
+perl -pe 's&(https://pyinstaller.org/en/)[^/]+/&$1v'$new_version'/&g' -i README.rst
 
 sh -c 'cd doc; make clean html'
 open doc/_build/html/CHANGES.html
