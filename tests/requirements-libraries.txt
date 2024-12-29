@@ -20,7 +20,7 @@ Django==5.1.4; python_version >= '3.10'
 future==1.0.0
 gevent==24.11.1; python_version >= '3.9'
 ipython==8.31.0; python_version >= '3.10'
-keyring==25.5.0
+keyring==25.6.0; python_version >= '3.9'
 matplotlib==3.10.0; python_version >= '3.10'
 numpy==2.2.1; python_version >= '3.10'
 pandas==2.2.3; python_version >= '3.9'
@@ -30,9 +30,9 @@ PyGObject==3.50.0; sys_platform == 'linux' and python_version >= '3.9'
 PySide2==5.15.2.1; python_version < '3.11' and (sys_platform != 'darwin' or platform_machine != 'arm64')
 # PySide6 is a metapackage that depends on PySide6-Essentials and PySide6-Addons. Their versions are
 # usually kept in sync.
-PySide6==6.8.1; python_version >= '3.9'
-PySide6-Addons==6.8.1; python_version >= '3.9'
-PySide6-Essentials==6.8.1; python_version >= '3.9'
+PySide6==6.8.1; python_version >= '3.9'  # pyup: != 6.8.1.1 # Provides only macOS wheels
+PySide6-Addons==6.8.1; python_version >= '3.9'  # pyup: != 6.8.1.1 # Provides only macOS wheels
+PySide6-Essentials==6.8.1; python_version >= '3.9'  # pyup: != 6.8.1.1 # Provides only macOS wheels
 # PyQt5 and add-on packages
 # We do not pin *-Qt5 packages (which contain Qt shared libraries), as Qt5 is not actively developed
 # anymore, and thus 5.15.x has a stable ABI. Plus, it seems that *-Qt5 5.15.2 wheels are available for
@@ -135,3 +135,5 @@ sphinx==7.1.2; python_version == '3.8'  # pyup: ignore
 ipython==8.12.1; python_version == '3.8'  # pyup: ignore
 
 Pillow==10.4.0; python_version == '3.8'  # pyup: ignore
+
+keyring==25.5.0; python_version == '3.8'  # pyup: ignore
