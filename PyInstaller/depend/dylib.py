@@ -219,6 +219,9 @@ _unix_excludes = {
     # the graphics stack anyway. No need to bundle it.
     r'libxcb\.so(\..*)?',
     r'libxcb-dri.*\.so(\..*)?',
+    # system running a Wayland compositor should already have these libraries
+    # in versions that should not conflict with system drivers, unlike bundled
+    r'libwayland.*\.so(\..*)?',
 }
 
 _aix_excludes = {
