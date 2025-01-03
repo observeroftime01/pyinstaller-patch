@@ -1,0 +1,5 @@
+(macOS) Have binary dependency analysis obtain the actual lists of
+run paths set on the python executable (``sys.executable``), instead of
+assuming that it is effectively set to ``@loader_path/../lib``. This
+enables discovery of shared libraries bundled with python builds that
+use different origin for their run paths and ``@rpath``-based references.
