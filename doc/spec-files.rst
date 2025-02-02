@@ -831,3 +831,55 @@ based parser rather than rolling your own using :data:`sys.argv` then
             name='example',
             console=False,
         )
+
+
+Using shared code and configuration in spec files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The contents of the spec file are treated as Python executable code by
+PyInstaller; i.e., it is read and executed in a similar way as a regular
+Python script. Therefore, you can have your spec file import any Python
+module -- the ones from the standard library, 3rd party modules installed
+in ``site-packages`` directory, or your own modules.
+
+If you have multiple spec files (for example, one for each platform that
+you build the frozen application for), you may wish to extract common code
+and configuration into a dedicated python module that is placed next to
+the spec files. In such cases, it is important to note that the directory
+that contains the spec file is not automatically added to the Python
+search path; therefore, to make your shared module discoverable, you need
+to add the location of the spec file (stored by PyInstaller in the global
+``SPEC`` variable) to the list of search paths in :data:`sys.path` at the
+very top of the spec file:
+
+.. code-block:: python
+
+    # common_spec.py
+
+    datas = [
+        ('src/README.txt', '.'),
+        ('/mygame/data', 'data'),
+        ('/mygame/sfx/*.mp3', 'sfx')
+    ]
+
+.. code-block:: python
+
+    # example.spec
+
+    import sys
+    import os
+
+    # SPEC is defined by PyInstaller in the context in which the spec is executed
+    sys.path.insert(0, os.path.dirname(SPEC))
+
+    import common_spec
+
+    a = Analysis(
+        ['example.py'],
+        pathex=[],
+        binaries=[],
+        datas=common_spec.datas,
+    ...
+
+
+.. _common_spec_definitions:
