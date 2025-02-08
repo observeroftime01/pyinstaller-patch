@@ -1,3 +1,0 @@
-Fix errors raised by ``setuptools`` hook utility class and various
-related hooks when building with completely de-vendored ``setuptools``
-(for example, as packaged by Arch Linux).

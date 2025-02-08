@@ -15,6 +15,131 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.12.0 (2025-02-08)
+-------------------
+
+Features
+~~~~~~~~
+
+* (Cygwin) Improve Cygwin support to the extent that we can run a
+  Cygwin-based CI pipeline with basic part of PyInstaller's test suite.
+  (:issue:`8972`)
+* Extend the :ref:`module_collection_mode <package collection mode>` setting
+  from :issue:`6945` to also apply to modules collected into
+  ``base_library.zip`` archive. Implement discovery of source .py files for
+  modules in ``base_library.zip`` at run-time. This allows collection and
+  discovery of source .py files for modules in ``base_library.zip``, which might
+  be required by frameworks that perform aggressive recursive introspection all
+  way down to standard library modules (for example, ``torch`` JIT in
+  combination with certain model implementations). (:issue:`8971`)
+
+
+Bugfix
+~~~~~~
+
+* (AIX) Fix spurious run-time error in bootloader when no Wflags and/or no
+  Xflags are specified via bootloader's run-time options (i.e., most of the
+  time). (:issue:`9006`)
+* (macOS) Fix directory name sanitization when building macOS .app bundles
+  to properly account for nested .framework bundles, and prevent mangling
+  of .framework directory name of all but inner-most .framework bundles.
+  For example, the ``sdl2dll/dll/SDL2_image.framework`` directory from
+  ``pysdl2-dll`` PyPI wheels would become mangled into
+  ``sdl2dll/dll/SDL2_image__dot__framework`` due to having nested
+  .framework bundles in its ``Versions/A/Frameworks`` sub-directory.
+  (:issue:`8936`)
+* (macOS) Have binary dependency analysis obtain the actual lists of
+  run paths set on the python executable (:data:`sys.executable`), instead of
+  assuming that it is effectively set to ``@loader_path/../lib``. This
+  enables discovery of shared libraries bundled with python builds that
+  use different origin for their run paths and ``@rpath``-based references.
+  (:issue:`8951`)
+* (macOS) Prevent binary dependency analysis from spuriously resolving
+  shared library instance in a standard library path (for example,
+  Homebrew-installed library in ``/usr/local/lib``) when trying to
+  resolve ``@rpath``-based reference with multiple candidate run paths
+  that are anchored to ``@loader_path`` or ``@executable_path`` prefix
+  that resolves to a completely different path prefix (for example, an
+  Anaconda python environment). (:issue:`8962`)
+* Add exclude for ``libwayland*.so`` to prevent mismatches with system drivers.
+  (:issue:`8963`)
+* Fix errors raised by ``setuptools`` hook utility class and various
+  related hooks when building with completely de-vendored ``setuptools``
+  (for example, as packaged by Arch Linux). (:issue:`8947`)
+* Gracefully handle cases when ``_tkinter`` is a built-in instead of an
+  extension module, and thus does not have a ``__file__`` attribute.
+  Most notable example of this are `indygreg's python-build-standalone
+  CPython builds <https://github.com/astral-sh/python-build-standalone>`_
+  for macOS and Linux. This fixes collection of ``tkinter`` and associated
+  Tcl/Tk resources when using such python builds. When trying to enable
+  splash screen, a descriptive error is now raised, because splash screen
+  requires shared Tcl/Tk libraries, while a built-in ``_tkinter`` seems to
+  indicate that python was statically linked against Tcl/Tk libraries.
+  (:issue:`9012`)
+* Rework the ``localpycs`` cache in the ``build`` directory to avoid relying
+  on the source .py file timestamps. Some package managers (e.g., Anaconda)
+  (re)set the file creation/modification time of installed files to the
+  time of packaging rather than having them reflect the time of installation;
+  therefore, the PyInstaller bootstrap script and modules would fail to be
+  properly recompiled when switching between different versions of
+  PyInstaller packaged by Anaconda. (:issue:`8909`)
+* When constructing ``PyiFrozenFinder`` for the given path and trying
+  to compute the path that is relative to the top-level application
+  directory, do not fully resolve the given path. Instead, try computing
+  relative path using both the original and the fully resolved top-level
+  application directory path. This change prevents us from potentially
+  resolving symbolic links in parts of the given path that do not belong
+  to the top-level application directory. (:issue:`8994`)
+
+
+Incompatible Changes
+~~~~~~~~~~~~~~~~~~~~
+
+* (Cygwin) PyInstaller does not attempt to collect ``cygwin1.dll`` anymore.
+  If you want to create "stand-alone" Cygwin-based frozen application, you
+  need to place a copy of the DLL next to the frozen application's
+  executable, and distribute them together. See :ref:`Cygwin-specific section
+  of Platform-specific Notes <Platform-specific Notes - Cygwin>` for details.
+  (:issue:`8972`)
+
+
+Hooks
+~~~~~
+
+* Add hook for ``gi.repository.Rsvg``. (:issue:`8940`)
+* Add hooks for ``PyQt6.QtGraphs`` and ``PyQt6.QtGraphsWidgets`` that
+  were introduced in ``PyQt6`` v6.8.1 (via ``PyQt6-Graphs`` add-on package).
+  (:issue:`8924`)
+
+
+Module Loader
+~~~~~~~~~~~~~
+
+* Split the ``PyiFrozenImporter`` (fused `path based finder
+  <https://docs.python.org/3/glossary.html#term-path-based-finder>`_
+  and `loader <https://docs.python.org/3/glossary.html#term-loader>`_)
+  into separate finder (``PyiFrozenFinder``) and loader (``PyiFrozenLoader``).
+  This better matches the separation between python's built-in finders and
+  loaders, and thus accommodates 3rd-party code that naively expects to
+  encounter only python's built-in finders and loaders. (:issue:`8934`)
+
+
+Documentation
+~~~~~~~~~~~~~
+
+* Add notes about Cygwin and ``cygwin1.dll`` under new :ref:`Cygwin-specific
+  section of Platform-specific Notes <Platform-specific Notes - Cygwin>`.
+  (:issue:`8972`)
+
+
+Bootloader build
+~~~~~~~~~~~~~~~~
+
+* The stock Linux bootloaders are now built using generic Ubuntu 18.04 and
+  Alpine
+  3.12 Docker images rather than manylinux/musllinux/dockcross. (:issue:`8881`)
+
+
 6.11.1 (2024-11-10)
 -------------------
 

@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "PYI-MAKESPEC" "1" "2024-11-10" "6.11.1" "PyInstaller"
+.TH "PYI-MAKESPEC" "1" "2025-02-08" "6.12.0" "PyInstaller"
 .SH NAME
 pyi-makespec \- Create a spec file for your PyInstaller project
 .\" disable justification (adjust text to left margin only)
@@ -221,7 +221,7 @@ used if upx corrupts certain binaries during compression. FILE is the
 filename of the binary without path. This option can be used multiple
 times.
 .UNINDENT
-.SS Windows And Mac Os X Specific Options
+.SS Windows And Macos Specific Options
 .INDENT 0.0
 .TP
 .B  \-c\fP,\fB  \-\-console\fP,\fB  \-\-nowindowed
@@ -229,13 +229,13 @@ Open a console window for standard i/o (default). On Windows this option
 has no effect if the first script is a \(aq.pyw\(aq file.
 .TP
 .B  \-w\fP,\fB  \-\-windowed\fP,\fB  \-\-noconsole
-Windows and Mac OS X: do not provide a console window for standard i/o. On
-Mac OS this also triggers building a Mac OS .app bundle. On Windows this
+Windows and macOS: do not provide a console window for standard i/o. On
+macOS this also triggers building a macOS .app bundle. On Windows this
 option is automatically set if the first script is a \(aq.pyw\(aq file. This
 option is ignored on *NIX systems.
 .UNINDENT
 .sp
-\-\-hide\-console {hide\-early,minimize\-early,minimize\-late,hide\-late}
+\-\-hide\-console {hide\-early,hide\-late,minimize\-early,minimize\-late}
 .INDENT 0.0
 .INDENT 3.5
 Windows only: in console\-enabled executable, have bootloader automatically
@@ -248,7 +248,7 @@ hide or minimize the console window if the program owns the console window
 .BI \-i \ <FILE.ico or FILE.exe,ID or FILE.icns or Image or \(dqNONE\(dq>\fR,\fB \ \-\-icon \ <FILE.ico or FILE.exe,ID or FILE.icns or Image or \(dqNONE\(dq>
 FILE.ico: apply the icon to a Windows executable. FILE.exe,ID: extract the
 icon with ID from an exe. FILE.icns: apply the icon to the .app bundle on
-Mac OS. If an image file is entered that isn\(aqt in the platform format (ico
+macOS. If an image file is entered that isn\(aqt in the platform format (ico
 on Windows, icns on Mac), PyInstaller tries to use Pillow to translate the
 icon into the correct format (if Pillow is installed). Use \(dqNONE\(dq to not
 apply any icon, thereby making the OS show some default (default: apply
@@ -289,7 +289,7 @@ application start.
 Using this option allows an elevated application to work with Remote
 Desktop.
 .UNINDENT
-.SS Mac Os Specific Options
+.SS Macos Specific Options
 .INDENT 0.0
 .TP
 .B  \-\-argv\-emulation
@@ -298,9 +298,9 @@ document/URL event is processed by the bootloader and the passed file paths
 or URLs are appended to sys.argv.
 .TP
 .BI \-\-osx\-bundle\-identifier \ BUNDLE_IDENTIFIER
-Mac OS .app bundle identifier is used as the default unique program name
-for code signing purposes. The usual form is a hierarchical name in reverse
-DNS notation. For example: com.mycompany.department.appname (default: first
+macOS .app bundle identifier is used as the default unique program name for
+code signing purposes. The usual form is a hierarchical name in reverse DNS
+notation. For example: com.mycompany.department.appname (default: first
 script\(aqs basename)
 .TP
 .BI \-\-target\-architecture \ ARCH\fR,\fB \ \-\-target\-arch \ ARCH
